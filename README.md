@@ -3,6 +3,9 @@
 # Table of Contents
 1. [Git cherry-pick](#git-cherry-pick)
 2. [Git rebase](#git-rebase)
+3. [Git alias](#git-alias)
+4. [GitFlow](#gitflow)
+5. [Git Commit Message Best Practices](#git-commit-message-best-practices)
 
 ### Git cherry-pick
 
