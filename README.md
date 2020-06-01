@@ -280,3 +280,219 @@ Branch names should contain only **lowercase letters**, **numbers** and **hyphen
 
 Why not with slashes? because of continuous deployment to the corresponding subdomain, for example, **feature-ui-auth** will be deployed to **ui-auth.project .com**, this is why we should use only symbols allowed for DNS names.
 
+### Git Commit Message Best Practices
+
+#### Rules to consider
+
+#### Make clean, single-purpose commits
+
+This is to avoid getting sidetracked into doing too many things when working on one particular thing — when you are trying to fix one particular bug and you spot another one, and you cant resist the urge to fix that as well. And another one. Soon you end up with so many changes all going together in one commit.
+
+- It makes it easier for other people in the team looking at your change, making code reviews more efficient.
+- If the commit has to be rolled back completely, its far easier to do so.
+- Its straightforward to track these changes with your ticketing system.
+
+Additionally, it helps you mentally parse changes you've made using git log.
+
+#### Write meaningful commit messages
+
+Insightful and descriptive commit messages that concisely describe what changes are being made as part of a commit make life easier for others as well as your future self.
+
+If you're using a ticketing system, you should also include the ticket id in the description. Several modern VCS hosting systems, such as GitHub, auto-link the commits to the issues.
+
+#### Commit early, commit often
+
+Git works best and works in your favor when you commit your work often. Instead of waiting to make the commit perfect, it is better to work in small chunks and keep committing your work. If you are working on a feature branch that could take some time to finish, it helps you keep your code updated with the latest changes so that you avoid conflicts.
+
+Also, Git only takes full responsibility for your data when you commit. It helps you from losing work, reverting changes, and helping trace what you did when using git-reflog.
+
+#### Don't alter published history
+
+Once a commit has been merged to an upstream default branch (and is visible to others), it is strongly advised not to alter history. Git and other VCS tools to rewrite branch history, but doing so is problematic for everyone who has access to the repository. While git-rebase is a useful feature, it should only be used on branches that only you are working with.
+
+Having said that, there would inevitably be occasions where there's a need for a history rewrite on a published branch. Extreme care must be practiced while doing so.
+
+#### Don't commit generated files
+
+Generally, only those files should be committed that have taken manual effort to create, and cannot be re-generated. Files can be re-generated at will can be generated any time, and normally don't work with line-based diff tracking as well. It is useful to add a .gitignore file in your repository's root to automatically tell Git which files or paths you don't want to track.
+
+#### Format
+
+<pre>< type >(< optional scope >): < subject >
+< blank-line >
+< optional body message >
+< blank-line >
+< optional body footer ></pre>
+
+The first line should always be 50 characters or less and it should be followed by a blank line.
+
+Often a subject by itself is sufficient. When it's not, add a blank line (this is important) followed by one or more paragraphs hard wrapped to 72 characters.
+
+Those paragraphs should explain:
+
+##### Why is this change necessary?
+
+This answer explains what to expect in the commit, allowing them to more easily identify and point out unrelated changes.
+
+##### How does it address the issue?
+
+Describe, at a high level, what was done to affect change. If your change is obvious, you may be able to omit to address this question.
+
+##### What side effects does this change have?
+
+This is the most important question to answer, as it can point out problems where you are making too many changes in one commit or branch. One or two bullet points for related changes may be okay, but five or six are likely indicators of a commit that is doing too many things.
+
+#### Avoid the use of the -m <msg> / --message=<msg> flag to git commit.
+
+It makes it feel that you have to fit your commit message into the terminal command, and makes the commit feel more like a one-off argument than a page in history:
+
+`git commit -m "Fix login bug"`
+
+A more useful commit message might be:
+
+<pre>Redirect the user to the requested page after login
+
+https://trello.com/path/to/relevant/card
+
+Users were being redirected to the home page after login, which is less
+useful than redirecting to the page they had originally requested before
+being redirected to the login form.
+
+* Store requested path in a session variable
+* Redirect to the stored location after successfully logging in the user</pre>
+
+Consider including a link to the issue/story/card in the commit message a standard for your project in the message footer.
+
+#### Type
+
+Type of the made changes must be one of the following:
+
+- build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- ci: Changes to our CI configuration files and scripts (example scopes: Circle, BrowserStack, SauceLabs)
+- docs: Documentation only changes
+- feat: introduces a new feature to the codebase/modifies a current feature
+- fix: Patches a bug in your codebase
+- perf: A code change that improves performance
+- refactor: A code change that neither fixes a bug nor adds a feature
+- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- test: Adding missing tests or correcting existing tests
+- chore: Any other changes that don't affect code, such as changes to the build process or auxiliary tools and libraries
+- improv: improves a current implementation without adding a new feature or fixing a bug
+
+#### Scope
+
+Scope of the changes specifying the place of the commit change, for example, $location, $browser, $compile, $rootScope, \$featureA, among others you can think of
+
+You can use \* if there isn't a more fitting scope
+
+#### Subject
+
+The subject contains a very short description of the change:
+
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
+
+#### Body
+
+Just as in the subject, use the imperative, present tense: "change" not "changed" nor "changes". The body should include the motivation for the change and contrast this with previous behavior.
+
+#### Footer
+
+All breaking changes have to be mentioned in the footer with the description of the change, justification and migration notes
+
+Breaking Changes should start with the word BREAKING CHANGE: with a space or two newlines. The rest of the commit message is then used for this.
+
+#### Referencing issues
+
+Closed bugs should be listed on a separate line in the footer prefixed with "Closes" keyword like this:
+
+`Closes #234`
+
+or in case of multiple issues:
+
+`Closes #123, #245, #992`
+
+#### Important commit
+
+you can add ! to the commit message to draw attention to breaking change
+
+<pre>chore!: drop Node 6 from the testing matrix
+
+BREAKING CHANGE: dropping Node 6 which hits the end of life in April</pre>
+
+#### Examples
+
+<pre>feat($browser): onUrlChange event (popstate/hashchange/polling)
+
+Added new event to $browser:
+- forward popstate event if available
+- forward hashchange event if popstate not available
+- do polling when neither popstate nor hashchange available
+
+Breaks $browser.onHashChange, which was removed (use onUrlChange instead)</pre>
+
+<pre>fix($compile): couple of unit tests for IE9
+
+Older IEs serialize HTML uppercased, but IE9 does not...
+Would be better to expect case insensitive, unfortunately, jasmine does
+not allow to user regexps for throw expectations.
+
+Closes #392
+Breaks foo.bar API, foo.baz should be used instead</pre>
+
+<pre>feat(directive): ng:disabled, ng:checked, ng:multiple, ng:readonly, ng:selected
+
+New directives for proper binding these attributes in older browsers (IE).
+Added corresponding description, live examples, and e2e tests.
+
+Closes #351</pre>
+
+<pre>style($location): add couple of missing semi colons</pre>
+
+<pre>docs(guide): update fix docs from Google Docs
+
+A couple of typos fixed:
+- indentation
+- batchLogbatchLog -> batchLog
+- start periodic checking
+- missing brace</pre>
+
+<pre>feat($compile): simplify isolate scope bindings
+
+Changed the isolate scope binding options to:
+  - @attr - attribute binding (including interpolation)
+  - =model - by-directional model binding
+  - &expr - expression execution binding
+
+This change simplifies the terminology as well as
+many choices available to the developer. It
+also supports local name aliasing from the parent.
+
+BREAKING CHANGE: isolate scope bindings definition has changed and
+the inject option for the directive controller injection was removed.
+
+To migrate the code follow the example below:
+
+Before:
+
+scope: {
+  myAttr: 'attribute',
+  myBind: 'bind',
+  myExpression: 'expression',
+  myEval: 'evaluate',
+  myAccessor: 'accessor'
+}
+
+After:
+
+scope: {
+  myAttr: '@',
+  myBind: '@',
+  myExpression: '&',
+  // myEval - usually not useful, but in cases where the expression is assignable, you can use '='
+  myAccessor: '=' // in directive's template change myAccessor() to myAccessor
+}
+
+The removed `inject` wasn't generally useful for directives so there should be no code using it.</pre>
+
