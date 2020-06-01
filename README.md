@@ -105,3 +105,64 @@ git push
 ##### Step 7: Finish
 You are now done.  You can choose to delete the branch, although deleting the branch will remove all the individual logged commits on the branch since they were squashed on the master branch.
 
+#### What is git alias?
+The term alias is synonymous with a shortcut.
+
+Aliases are created through the use of the ```git config``` command and the Git configuration files. As with other configuration values, aliases can be created in a local or global scope.
+
+To set up a new alias for a command, we need to use the git config command.
+
+Structure: git config --global alias.$alias_name $command
+
+```git config --global alias.c checkout```
+
+##### How do i display all my aliases?
+Run this command in your terminal:
+
+```git config --global alias.alias "! git config --get-regexp ^alias\. | sed -e s/^alias\.// -e s/\ /\ =\ /"```
+
+Now you can use `git alias` to list all the aliases you have created.
+
+##### How do i configure external commands outside of git?
+With the use of `!` at the start of the command, for example:
+
+To open VS Code:
+
+```git config --global alias.code "! code ."```
+
+##### Where do i access my git config file?
+The global or local config files can be manually edited and saved to create aliases. The global config file lives at \$HOME/.gitconfig file path. The local path lives within an active git repository at /.git/config.
+
+Using VIM in the terminal:
+
+```vim ~/.gitconfig```
+
+##### How do i execute external commands?
+With the use of `!` at the start of the command and ```&&```, for example:
+
+To checkout to master and pull:
+
+`git config --global alias.mp "! git checkout master && git pull"`
+
+##### My list of git aliases
+```
+	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+	c = commit
+	cm = commit -m
+	a = add --all
+	acm = ! git add . && git commit -m
+	c = clone
+	s = status
+	b = checkout -b
+	m = checkout master
+	d = branch -D
+	mp = ! git checkout master && git pull
+	l = log --graph --oneline --decorate --all
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	sta = stash apply
+	st = stash
+	unstage = reset HEAD --
+	code = ! code .
+```
+
