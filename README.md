@@ -1,5 +1,9 @@
 # Git Workshop 
 
+# Table of Contents
+1. [Git cherry-pick](#git-cherry-pick)
+2. [Git rebase](#git-rebase)
+
 ### Git cherry-pick
 
 #### What does cherry-pick do?
